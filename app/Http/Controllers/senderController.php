@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Ramsey\Uuid\Type\Integer;
+use Spatie\FlareClient\Api;
 
 class senderController extends Controller
 {
@@ -24,35 +25,40 @@ class senderController extends Controller
         try{
                 $datas = $this->getData();
                 $cnpj = $datas[0]["cnpj_remete"];
-            
+                $totalprice = 0;
+                            
                 foreach($datas as $data){
                     if($data["cnpj_remete"] === $cnpj){
                         array_push($notas, $data["chave"]);
+                        $totalprice += $data["valor"];
                 }else{            
                     $value =array(
                         "cnpj" => $data["cnpj_remete"],
                         "chaves" => $notas,
+                        "total" => $totalprice, 
                     );            
                     array_push($response,$value);
                     $notas=array();
 
                     $cnpj = $data["cnpj_remete"];
                     array_push($notas, $data["chave"]);
+                    $totalprice = $data["valor"];
                 }
             }
             
                 $value =array(
                 "cnpj" => $data["cnpj_remete"],
                 "chaves" => $notas,
+                "total" => $totalprice, 
                 );
-                array_push($response,$value);                   
+                array_push($response,$value); 
                 return response() -> json($response,200);
         }catch(Exception $e){
             return http_response_code(500);
             
         }
-    }
-
+    }   
+   
     function getAllByCNPJ($cnpj){
         try{
         $datas = $this->getData() ;        
@@ -83,13 +89,7 @@ class senderController extends Controller
             return http_response_code(500);
         }
     } 
-    function json_validator($data) { 
-        if (!empty($data)) { 
-            return is_string($data) &&
-              is_array(json_decode($data, true)) ? true : false; 
-        } 
-        return false; 
-    }
+    
 
     function CalculateWillRecive($cnpj){     
         try{
@@ -105,9 +105,9 @@ class senderController extends Controller
                  $daysDifference = $interval->format('%R%a');
                 
                  if($data["status"] == "ABERTO" && $daysDifference<2){
-                    $willReciveValue = $willReciveValue  + $data["valor"];
+                    $willReciveValue += $data["valor"];
                  }else{
-                    $notReciveValue = $notReciveValue + $data["valor"];
+                    $notReciveValue += $data["valor"];
                 }
             }
            
@@ -121,11 +121,4 @@ class senderController extends Controller
             return http_response_code(500);
         }
     }
-
-    function UniqueRequest(){
-      
-    }
-
-   
-
 }

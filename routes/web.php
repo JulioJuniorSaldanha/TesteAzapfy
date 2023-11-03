@@ -20,8 +20,7 @@ Route::get('/', function () {
     return view('Remetentes', ['apiArray'=> $apiArray]);
 });
 
-
-Route::get('remetentes', 'App\Http\Controllers\senderController@listall');
+Route::get('remetentes', [senderController::class,'listall']);
 
 Route::get('remetentes/{cnpj}', [senderController::class,'getAllByCNPJ']);
 
