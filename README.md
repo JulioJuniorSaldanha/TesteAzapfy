@@ -13,9 +13,9 @@
 
 ## 👨‍💻O que é Nescessario para rodar o projeto?👨‍💻
 
-<p>-Você deve ter o composer e o php instalados em seu ambiente pode baixar clicando nos links abaixo: </p>
+<p>Você deve ter o composer e o php instalados em seu ambiente pode baixar clicando nos links abaixo: </p>
 <a href="https://www.apachefriends.org/pt_br/index.html">PHP(XAMPP)</a><br>
-<a href="https://getcomposer.org">Composer</a><br>
+<a href="https://getcomposer.org">Composer</a><br><br>
 <p>Após ter verificado o download do composer e do php basta realizar um clone do projeto e realizar os seguintes comandos no terminal:</p>
 <p><code>$ composer install</code></p>
 <p><code>$ php artisan serve</code></p>
